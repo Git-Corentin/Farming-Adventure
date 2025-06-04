@@ -10,18 +10,28 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game() {
+Game::Game(): mMoneyText(mFont) {
   assert(mFont.openFromFile("res/Sansation.ttf"));
 
   mStatisticsText.setFont(mFont);
   mStatisticsText.setPosition({5.f, 5.f});
   mStatisticsText.setCharacterSize(14);
 
-  mClickablePlot = std::make_unique<ClickablePlot>(sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f));
-  mClickablePlot->setOnClick([this]() {
-      // Ici tu peux ajouter ta logique de jeu
-      // Par exemple : money += 1;
-  });
+  mMoneyText.setPosition({5.f, 25.f});
+  mMoneyText.setCharacterSize(16);
+  mMoneyText.setFillColor(sf::Color::White);
+  mMoneyText.setString("Argent: 0");
+
+  auto wheat = std::make_shared<WheatSeed>();
+  mClickablePlot = std::make_unique<ClickablePlot>(
+    sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), "Tomate");
+  mClickablePlot->setGame(this);
+  mClickablePlot->setSeed(wheat);
+}
+
+void Game::onPlotHarvested(int reward) {
+  mMoney += reward;
+  mMoneyText.setString("Argent: " + std::to_string(mMoney));
 }
 
 void Game::run() {
@@ -52,15 +62,15 @@ void Game::processEvents() {
       continue;
     }
 
-    // Use is<T>() to check the type, then getIf<T>() to get a pointer to the specific event data
     if (event->is<sf::Event::Closed>()) {
       mWindow.close();
     } else if (const auto* mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()) {
-      // mouseEvent is a pointer to sf::Event::MouseButtonPressed if the event type matches
+
       if (mouseEvent->button == sf::Mouse::Button::Left) {
-        // CORRECTED: Access x and y through the 'position' member
+
         sf::Vector2f mousePos = {(float)mouseEvent->position.x, (float)mouseEvent->position.y};
         mClickablePlot->handleClick(mousePos);
+
       }
     }
     // You can add more else if (const auto* ... = event->getIf<sf::Event::SomeOtherEvent>()) { ... }
@@ -76,6 +86,7 @@ void Game::render() {
   mWindow.clear();
   mClickablePlot->draw(mWindow);
   mWindow.draw(mStatisticsText);
+  mWindow.draw(mMoneyText);
   mWindow.display();
 }
 

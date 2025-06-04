@@ -2,20 +2,27 @@
 #define CLICKABLE_PLOT_H
 
 #include <SFML/Graphics.hpp>
+#include "Seed.h"
+class Game;
 #include <functional>
 
 class ClickablePlot {
 public:
-	ClickablePlot(const sf::Vector2f& size, const sf::Vector2f& position);
+	ClickablePlot(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& seedName);
 
 	void draw(sf::RenderWindow& window) const;
-	bool contains(sf::Vector2f point) const;
-	void setOnClick(std::function<void()> callback);
 	void handleClick(sf::Vector2f mousePosition);
+
+	void setSeed(std::shared_ptr<Seed> seed);
+	void setGame(Game* game);
 
 private:
 	sf::RectangleShape mShape;
-	std::function<void()> mOnClick;
+	sf::Text mText;
+
+	std::shared_ptr<Seed> mCurrentSeed;
+
+	Game* mGame = nullptr;
 };
 
 #endif // CLICKABLE_PLOT_H

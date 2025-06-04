@@ -46,11 +46,11 @@ class SeedReservoir {
 abstract class Seed {
   - string name
   - int clicksToGrowBase
-  - int moneyPerClickBase
+  - int moneyRaised
   - int currentClicksToGrow
   + void applyGrowthModifier(int modifier)
   + int getClicksToGrow()
-  + int getMoneyPerClick()
+  + int getMoneyRaised()
   + void resetClicks()
 }
 
