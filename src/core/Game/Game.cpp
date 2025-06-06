@@ -26,16 +26,17 @@ Game::Game(): mMoneyText(mFont) {
   mMoneyText.setFillColor(sf::Color::White);
   mMoneyText.setString("Argent: 0");
 
-  auto seed = SeedFactory::createSeed(SeedType::TOMATO);
   mClickablePlot = std::make_unique<ClickablePlot>(
-    sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), "Tomate");
+    sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), ""); // Nom mis à jour dans setSeed
   mClickablePlot->setGame(this);
-  mClickablePlot->setSeed(seed);
+  seedReservoir.setSelectedSeed(SeedType::WHEAT); // Blé par défaut
+  plantNextSeed();
 }
 
 void Game::onPlotHarvested(int reward) {
   mMoney += reward;
   mMoneyText.setString("Argent: " + std::to_string(mMoney));
+  plantNextSeed();  // Planter automatiquement la prochaine graine
 }
 
 void Game::run() {
@@ -64,6 +65,16 @@ void Game::run() {
           seedReservoir.setSelectedSeed(type);
         }
           }
+    }
+    if (ImGui::Button("Recevoir une graine aléatoire !")) {
+      int maxType = static_cast<int>(SeedType::ORCHID);
+      SeedType randomType;
+
+      do {
+        randomType = static_cast<SeedType>(rand() % (maxType + 1));
+      } while (SeedReservoir::isWheat(randomType)); // évite de donner du blé
+
+      seedReservoir.addSeed(randomType, 1);
     }
     ImGui::End();
 
@@ -131,4 +142,21 @@ void Game::updateStatistics(sf::Time elapsedTime) {
     mStatisticsUpdateTime -= sf::seconds(1.0f);
     mStatisticsNumFrames = 0;
   }
+}
+
+void Game::plantNextSeed() {
+  SeedType typeToPlant = seedReservoir.getSelectedSeed();
+
+  // Si la graine sélectionnée n'est pas le blé et que le stock est vide, on remet le blé
+  if (!SeedReservoir::isWheat(typeToPlant) && seedReservoir.getSeedQuantity(typeToPlant) <= 0) {
+    typeToPlant = SeedType::WHEAT;
+    seedReservoir.setSelectedSeed(typeToPlant);
+  }
+
+  if (!SeedReservoir::isWheat(typeToPlant)) {
+    seedReservoir.removeSeed(typeToPlant, 1);
+  }
+
+  auto newSeed = SeedFactory::createSeed(typeToPlant);
+  mClickablePlot->setSeed(newSeed);
 }

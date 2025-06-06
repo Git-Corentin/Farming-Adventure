@@ -51,8 +51,13 @@ void ClickablePlot::handleClick(sf::Vector2f mousePosition) {
 
 	if (mCurrentSeed->getClicksToGrow() == 0) {
 		if (mGame) {
-			mGame->onPlotHarvested(mCurrentSeed->getMoneyRaised());
-			std::cout << "Récolte de " << mCurrentSeed->getName() << " réussie, gain: " << mCurrentSeed->getMoneyRaised() << "\n";
+			std::shared_ptr<Seed> harvestedSeed = mCurrentSeed;
+			int reward = harvestedSeed->getMoneyRaised();
+			std::string name = harvestedSeed->getName();
+
+			mGame->onPlotHarvested(reward);
+
+			std::cout << "Récolte de " << name << " réussie, gain: " << reward << "\n";
 		}
 		mCurrentSeed->resetClicks();
 	}
