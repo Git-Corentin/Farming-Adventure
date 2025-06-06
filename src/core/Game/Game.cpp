@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "ClickablePlot.h"  // À créer : représente la parcelle cliquable
+#include <imgui.h>
+#include <imgui-SFML.h>
 
 #include <cassert>
 #include <format>
@@ -7,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
 #include "SeedFactory.h"  // Pour créer des graines
+#include "SeedReservoir.h"  // Pour la gestion des graines
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -39,10 +42,30 @@ void Game::run() {
   sf::Clock clock;
   sf::Time timeSinceLastUpdate = sf::Time::Zero;
   mWindow.setFramerateLimit(60);
+  ImGui::SFML::Init(mWindow);
 
   while (mWindow.isOpen()) {
     sf::Time elapsedTime = clock.restart();
     timeSinceLastUpdate += elapsedTime;
+
+    ImGui::SFML::Update(mWindow, elapsedTime);
+
+    // Ton code ImGui ici
+    ImGui::Begin("Seed Reservoir");
+    for (int i = 0; i <= static_cast<int>(SeedType::ORCHID); ++i) {
+      SeedType type = static_cast<SeedType>(i);
+      int qty = seedReservoir.getSeedQuantity(type);
+
+      std::string label = SeedFactory::SeedTypeToString(type) + " (" + std::to_string(qty) + ")";
+
+      if (ImGui::Selectable(label.c_str(), seedReservoir.getSelectedSeed() == type, 0,
+          ImVec2(200, 0))) {
+        if (qty > 0 || SeedReservoir::isWheat(type)) {
+          seedReservoir.setSelectedSeed(type);
+        }
+          }
+    }
+    ImGui::End();
 
     while (timeSinceLastUpdate > TimePerFrame) {
       timeSinceLastUpdate -= TimePerFrame;
@@ -54,14 +77,17 @@ void Game::run() {
     updateStatistics(elapsedTime);
     render();
   }
+  ImGui::SFML::Shutdown();
 }
 
 void Game::processEvents() {
   while (const std::optional<sf::Event> event = mWindow.pollEvent()) {
     // Check if the optional contains an event
+
     if (!event) {
       continue;
     }
+    ImGui::SFML::ProcessEvent(mWindow, *event);
 
     if (event->is<sf::Event::Closed>()) {
       mWindow.close();
@@ -74,8 +100,7 @@ void Game::processEvents() {
 
       }
     }
-    // You can add more else if (const auto* ... = event->getIf<sf::Event::SomeOtherEvent>()) { ... }
-    // for other event types.
+
   }
 }
 
@@ -88,6 +113,7 @@ void Game::render() {
   mClickablePlot->draw(mWindow);
   mWindow.draw(mStatisticsText);
   mWindow.draw(mMoneyText);
+  ImGui::SFML::Render(mWindow);
   mWindow.display();
 }
 

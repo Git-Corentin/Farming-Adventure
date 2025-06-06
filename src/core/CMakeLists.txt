@@ -27,5 +27,10 @@ add_library(lib_core
         Game/SeedFactory.cpp
         Game/SeedFactory.h
 )
-target_include_directories(lib_core PUBLIC ./)
-target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)
+target_include_directories(lib_core PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
+        ${imgui-sfml_SOURCE_DIR}
+)
+target_link_libraries(lib_core PUBLIC pugixml sfml-graphics ImGui-SFML::ImGui-SFML)

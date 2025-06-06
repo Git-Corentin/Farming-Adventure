@@ -18,4 +18,6 @@ public:
 	void setSelectedSeed(SeedType type);
 	SeedType getSelectedSeed() const;
 	SeedType getRandomNonWheatSeed() const;
+
+	static bool isWheat(SeedType type);
 };

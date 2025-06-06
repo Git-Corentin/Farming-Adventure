@@ -1,4 +1,3 @@
-#pragma once
 
 #include "Seed.h"
 #include "SeedFactory.h"
@@ -33,3 +32,6 @@ std::shared_ptr<Seed> SeedFactory::createSeed(SeedType type) {
 	}
 
 };
+
+
+

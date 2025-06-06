@@ -40,6 +40,24 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# ImGui
+FetchContent_Declare(
+        imgui
+        URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.9.tar.gz
+)
+FetchContent_MakeAvailable(imgui)
+set(IMGUI_DIR ${imgui_SOURCE_DIR})
+
+# ImGui-SFML
+set(IMGUI_SFML_FIND_SFML OFF)
+set(IMGUI_SFML_IMGUI_DIR ${IMGUI_DIR})
+FetchContent_Declare(
+        imgui-sfml
+        URL https://github.com/eliasdaler/imgui-sfml/archive/refs/tags/v3.0.tar.gz
+)
+FetchContent_MakeAvailable(imgui-sfml)
+
+
 # enable_testing() must be in the source directory root (see cmake documentation at https://cmake.org/cmake/help/latest/command/enable_testing.html)
 # Otherwise, Visual Studio test explorer does not see unit tests (See ticket https://developercommunity.visualstudio.com/t/No-tests-discovered-for-googletest-and-C/1148799#T-ND1150621)
 include(GoogleTest)
