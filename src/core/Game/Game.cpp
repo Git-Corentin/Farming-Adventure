@@ -6,6 +6,7 @@
 #include <optional>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
+#include "SeedFactory.h"  // Pour créer des graines
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -22,11 +23,11 @@ Game::Game(): mMoneyText(mFont) {
   mMoneyText.setFillColor(sf::Color::White);
   mMoneyText.setString("Argent: 0");
 
-  auto wheat = std::make_shared<WheatSeed>();
+  auto seed = SeedFactory::createSeed(SeedType::TOMATO);
   mClickablePlot = std::make_unique<ClickablePlot>(
     sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), "Tomate");
   mClickablePlot->setGame(this);
-  mClickablePlot->setSeed(wheat);
+  mClickablePlot->setSeed(seed);
 }
 
 void Game::onPlotHarvested(int reward) {

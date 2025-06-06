@@ -15,6 +15,6 @@ int Seed::getMoneyRaised() const {
 }
 
 void Seed::resetClicks() {
-	currentClicksToGrow = clicksToGrowBase;
+		currentClicksToGrow = clicksToGrowBase;
 }
 
