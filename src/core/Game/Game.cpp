@@ -25,7 +25,7 @@ Game::Game(): mMoneyText(mFont) {
   mMoneyText.setPosition({5.f, 25.f});
   mMoneyText.setCharacterSize(16);
   mMoneyText.setFillColor(sf::Color::White);
-  mMoneyText.setString("Argent: 0");
+  mMoneyText.setString("Argent: " + std::to_string(mMoney));
 
   mClickablePlot = std::make_unique<ClickablePlot>(
     sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), ""); // Nom mis à jour dans setSeed
@@ -53,7 +53,7 @@ void Game::run() {
 
     // Ton code ImGui ici
     ImGui::Begin("Seed Reservoir");
-    for (int i = 0; i <= static_cast<int>(SeedType::ORCHID); ++i) {
+    for (int i = 0; i <= static_cast<int>(SeedType::TREE); ++i) {
       SeedType type = static_cast<SeedType>(i);
       int qty = seedReservoir.getSeedQuantity(type);
 
@@ -67,7 +67,7 @@ void Game::run() {
           }
     }
     if (ImGui::Button("Recevoir une graine aléatoire !")) {
-      int maxType = static_cast<int>(SeedType::ORCHID);
+      int maxType = static_cast<int>(SeedType::TREE);
       SeedType randomType;
 
       do {

@@ -12,8 +12,9 @@ public:
 	Seed(const std::string& name, int grow, int money)
 		: name(name), clicksToGrowBase(grow), moneyRaised(money), currentClicksToGrow(grow) {}
 	void applyGrowthModifier(int modifier);
-	int getClicksToGrow() const;
-	int getMoneyRaised() const;
+
+	int getClicksToGrow() const { return currentClicksToGrow; }
+	int getMoneyRaised() const { return moneyRaised; }
 	void resetClicks();
 
 	std::string getName() const { return name; }

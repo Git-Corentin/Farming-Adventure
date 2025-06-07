@@ -11,7 +11,7 @@
 
 
 SeedChest::SeedChest() {
-	cost = 500;
+	cost = 40;
 }
 
 UtilityChest::UtilityChest() {
@@ -27,26 +27,7 @@ void SeedChest::open(Game& game) {
 
 	game.removeMoney(cost);
 
-	std::map<SeedType, int> seedWeights = {
-		{SeedType::CORN, 15},
-		{SeedType::PUMPKIN, 10},
-		{SeedType::COCOA, 12},
-		{SeedType::TOMATO, 15},
-		{SeedType::SUNFLOWER, 12},
-		{SeedType::COTON, 10},
-		{SeedType::GOJI_BERRY, 5},
-		{SeedType::PALM_TREE, 4},
-		{SeedType::CARROT, 20},
-		{SeedType::STRAWBERRY, 7},
-		{SeedType::FLOWER_LOTUS, 5},
-		{SeedType::HEMP, 6},
-		{SeedType::ROSE, 3},
-		{SeedType::TREE, 2},
-		{SeedType::MUSHROOM, 15},
-		{SeedType::CARNIVOROUS_PLANT, 1},
-		{SeedType::BAMBOO, 8},
-		{SeedType::ORCHID, 2}
-	};
+	const std::map<SeedType, int>& seedWeights = SeedFactory::getAllSeedWeights();
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
