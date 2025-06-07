@@ -10,6 +10,7 @@
 #include <SFML/Window/Event.hpp>
 #include "SeedFactory.h"  // Pour créer des graines
 #include "SeedReservoir.h"  // Pour la gestion des graines
+#include "Chest/Chest.h"  // Pour ouvrir le coffre à graines
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -34,8 +35,7 @@ Game::Game(): mMoneyText(mFont) {
 }
 
 void Game::onPlotHarvested(int reward) {
-  mMoney += reward;
-  mMoneyText.setString("Argent: " + std::to_string(mMoney));
+  addMoney(reward);
   plantNextSeed();  // Planter automatiquement la prochaine graine
 }
 
@@ -75,6 +75,10 @@ void Game::run() {
       } while (SeedReservoir::isWheat(randomType)); // évite de donner du blé
 
       seedReservoir.addSeed(randomType, 1);
+    }
+    if (ImGui::Button("Ouvrir coffre à graines")) {
+      SeedChest chest;
+      chest.open(*this);
     }
     ImGui::End();
 
@@ -159,4 +163,14 @@ void Game::plantNextSeed() {
 
   auto newSeed = SeedFactory::createSeed(typeToPlant);
   mClickablePlot->setSeed(newSeed);
+}
+
+void Game::addMoney(int amount) {
+  mMoney += amount;
+  mMoneyText.setString("Argent: " + std::to_string(mMoney));
+}
+
+void Game::removeMoney(int amount) {
+  mMoney -= amount;
+  mMoneyText.setString("Argent: " + std::to_string(mMoney));
 }

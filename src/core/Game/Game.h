@@ -25,6 +25,14 @@ public:
 	void applyEffect(Effect* effect);
 	void plantNextSeed();
 	void onPlotHarvested(int reward);
+	void removeMoney(int amount);
+	void addMoney(int amount);
+
+	SeedReservoir& getSeedReservoir() { return seedReservoir; }
+	int getMoney() { return mMoney; }
+
+
+
 
 private:
 	void processEvents();

@@ -12,13 +12,13 @@ public:
 	virtual void open(Game& game) = 0;
 };
 
-class SeedChest : public Chest {
+class SeedChest final : public Chest {
 public:
 	SeedChest();
 	void open(Game& game) override;
 };
 
-class UtilityChest : public Chest {
+class UtilityChest final : public Chest {
 public:
 	UtilityChest();
 	void open(Game& game) override;
