@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <format>
+#include <iostream>
 #include <optional>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
@@ -22,7 +23,7 @@ Game::Game(): mMoneyText(mFont) {
   mStatisticsText.setPosition({5.f, 5.f});
   mStatisticsText.setCharacterSize(14);
 
-  mMoneyText.setPosition({5.f, 25.f});
+  mMoneyText.setPosition({5.f, 35.f});
   mMoneyText.setCharacterSize(16);
   mMoneyText.setFillColor(sf::Color::White);
   mMoneyText.setString("Argent: " + std::to_string(mMoney));
@@ -34,9 +35,15 @@ Game::Game(): mMoneyText(mFont) {
   plantNextSeed();
 }
 
-void Game::onPlotHarvested(int reward) {
-  addMoney(reward);
-  plantNextSeed();  // Planter automatiquement la prochaine graine
+void Game::onPlotHarvested(int baseReward) {
+  float multiplier = soil.getRewardMultiplier();
+  int adjustedReward = static_cast<int>(baseReward * multiplier);
+
+  addMoney(std::max(0, adjustedReward)); // Ne jamais descendre en dessous de 0
+
+  soil.worsen(); // Le sol se dégrade à chaque récolte
+
+  plantNextSeed(); // Une nouvelle graine est plantée automatiquement
 }
 
 void Game::run() {
@@ -51,7 +58,7 @@ void Game::run() {
 
     ImGui::SFML::Update(mWindow, elapsedTime);
 
-    // Ton code ImGui ici
+
     ImGui::Begin("Seed Reservoir");
     for (int i = 0; i <= static_cast<int>(SeedType::TREE); ++i) {
       SeedType type = static_cast<SeedType>(i);
@@ -80,6 +87,18 @@ void Game::run() {
       SeedChest chest;
       chest.open(*this);
     }
+    ImGui::End();
+
+    ImGui::Begin("Sol");
+
+    ImGui::Text("Degradation du sol :");
+    float degradationRatio = soil.getDegradationRatio();
+    std::string progressLabel = std::format("{:.0f} %%", degradationRatio * 100);
+    ImGui::ProgressBar(degradationRatio, ImVec2(200, 20), progressLabel.c_str());
+
+    ImGui::Text("Pénalité de clics : +%d", soil.getDegradationPenalty());
+    ImGui::Text("Multiplicateur de récompense : %.2fx", soil.getRewardMultiplier());
+
     ImGui::End();
 
     while (timeSinceLastUpdate > TimePerFrame) {
@@ -151,7 +170,6 @@ void Game::updateStatistics(sf::Time elapsedTime) {
 void Game::plantNextSeed() {
   SeedType typeToPlant = seedReservoir.getSelectedSeed();
 
-  // Si la graine sélectionnée n'est pas le blé et que le stock est vide, on remet le blé
   if (!SeedReservoir::isWheat(typeToPlant) && seedReservoir.getSeedQuantity(typeToPlant) <= 0) {
     typeToPlant = SeedType::WHEAT;
     seedReservoir.setSelectedSeed(typeToPlant);
@@ -162,6 +180,15 @@ void Game::plantNextSeed() {
   }
 
   auto newSeed = SeedFactory::createSeed(typeToPlant);
+
+  int growthPenalty = soil.getDegradationPenalty();
+  float rewardMultiplier = soil.getRewardMultiplier();
+
+  newSeed->applyPenaltiesAndBoosts(growthPenalty, rewardMultiplier);
+
+  std::cout << "Nouvelle graine : " << SeedFactory::SeedTypeToString(typeToPlant)
+            << ", clics nécessaires : " << newSeed->getClicksToGrow() << "\n";
+
   mClickablePlot->setSeed(newSeed);
 }
 

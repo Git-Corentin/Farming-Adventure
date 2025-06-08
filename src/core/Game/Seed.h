@@ -1,22 +1,29 @@
 #pragma once
-
 #include <string>
+
 class Seed {
+public:
+	Seed(std::string name, int clicksBase, int moneyBase);
+
+	void applyPenaltiesAndBoosts(int growthPenalty, float rewardMultiplier);
+	void resetClicks();
+	void incrementClicks();
+
+	bool isGrown() const;
+
+	int getClicksToGrow() const; // effective
+	int getCurrentClicksDone() const;
+
+	int getMoneyRaised() const;
+	std::string getName() const;
+
 protected:
 	std::string name;
+
 	int clicksToGrowBase;
-	int moneyRaised;
-	int currentClicksToGrow;
+	int effectiveClicksToGrow;
+	int currentClicksDone;
 
-public:
-	Seed(const std::string& name, int grow, int money)
-		: name(name), clicksToGrowBase(grow), moneyRaised(money), currentClicksToGrow(grow) {}
-	void applyGrowthModifier(int modifier);
-
-	int getClicksToGrow() const { return currentClicksToGrow; }
-	int getMoneyRaised() const { return moneyRaised; }
-	void resetClicks();
-
-	std::string getName() const { return name; }
+	int moneyBase;
+	int moneyFinal;
 };
-
