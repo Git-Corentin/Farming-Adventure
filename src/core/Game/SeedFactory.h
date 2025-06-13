@@ -28,7 +28,7 @@ public:
 			case SeedType::FLOWER_LOTUS: return "Celestial Lotus Seed";
 			case SeedType::ROSE: return "Eternal Rose Seed";
 			case SeedType::HEMP: return "Evil Hemp Seed";
-			case SeedType::TREE: return "Tree";
+			case SeedType::TREE: return "World Tree Seed";
 			default: return "Unknown";
 		}
 	}

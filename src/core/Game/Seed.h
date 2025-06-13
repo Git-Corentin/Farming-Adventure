@@ -5,7 +5,7 @@ class Seed {
 public:
 	Seed(std::string name, int clicksBase, int moneyBase);
 
-	void applyPenaltiesAndBoosts(int growthPenalty, float rewardMultiplier);
+	void applyMultipliers(float growthMultiplier, float rewardMultiplier);
 	void resetClicks();
 	void incrementClicks();
 

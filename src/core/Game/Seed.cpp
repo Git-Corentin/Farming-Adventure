@@ -9,8 +9,8 @@ Seed::Seed(std::string name, int clicksBase, int moneyBase)
 	  moneyFinal(moneyBase)
 {}
 
-void Seed::applyPenaltiesAndBoosts(int growthPenalty, float rewardMultiplier) {
-	effectiveClicksToGrow = std::max(1, clicksToGrowBase + growthPenalty);
+void Seed::applyMultipliers(float growthMultiplier, float rewardMultiplier) {
+	effectiveClicksToGrow = std::max(1, static_cast<int>(clicksToGrowBase * growthMultiplier));
 	moneyFinal = std::max(0, static_cast<int>(moneyBase * rewardMultiplier));
 	resetClicks();
 }

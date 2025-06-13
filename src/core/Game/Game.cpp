@@ -12,6 +12,10 @@
 #include "SeedFactory.h"  // Pour créer des graines
 #include "SeedReservoir.h"  // Pour la gestion des graines
 #include "Chest/Chest.h"  // Pour ouvrir le coffre à graines
+#include "Effect/Utility.h"  // Pour les effets utilitaires
+#include "Effect/Malus.h"  // Pour les effets de malus
+#include "Effect/ActiveEffect.h"  // Pour les effets actifs
+#include "Effect/EffectInterface.h"
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -26,7 +30,7 @@ Game::Game(): mMoneyText(mFont) {
   mMoneyText.setPosition({5.f, 35.f});
   mMoneyText.setCharacterSize(16);
   mMoneyText.setFillColor(sf::Color::White);
-  mMoneyText.setString("Argent: " + std::to_string(mMoney));
+  mMoneyText.setString("Money: " + std::to_string(mMoney));
 
   mClickablePlot = std::make_unique<ClickablePlot>(
     sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), ""); // Nom mis à jour dans setSeed
@@ -73,7 +77,7 @@ void Game::run() {
         }
           }
     }
-    if (ImGui::Button("Recevoir une graine aléatoire !")) {
+    if (ImGui::Button("Receive a random seed !")) {
       int maxType = static_cast<int>(SeedType::TREE);
       SeedType randomType;
 
@@ -83,21 +87,40 @@ void Game::run() {
 
       seedReservoir.addSeed(randomType, 1);
     }
-    if (ImGui::Button("Ouvrir coffre à graines")) {
+    if (ImGui::Button("Open seed box")) {
       SeedChest chest;
       chest.open(*this);
     }
+
+    /*if (ImGui::CollapsingHeader("Effets Utilitaires (Debug)")) {
+      if (ImGui::Button("Fertilizer")) {
+        Effect* e = new Fertilizer();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(e, 20);
+      }
+      if (ImGui::Button("Pesticide")) {
+        Effect* e = new Pesticide();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(e, 15);
+      }
+      if (ImGui::Button("Harvester")) {
+        Effect* e = new Harvester();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(e, 30);
+      }
+      // etc.
+    }*/
     ImGui::End();
 
-    ImGui::Begin("Sol");
+    ImGui::Begin("Soil");
 
-    ImGui::Text("Degradation du sol :");
+    ImGui::Text("Soil degradation :");
     float degradationRatio = soil.getDegradationRatio();
-    std::string progressLabel = std::format("{:.0f} %%", degradationRatio * 100);
+    std::string progressLabel = std::format("{:.0f} %", degradationRatio * 100);
     ImGui::ProgressBar(degradationRatio, ImVec2(200, 20), progressLabel.c_str());
 
-    ImGui::Text("Pénalité de clics : +%d", soil.getDegradationPenalty());
-    ImGui::Text("Multiplicateur de récompense : %.2fx", soil.getRewardMultiplier());
+    ImGui::Text("Click penalty : %.2fx", soil.getGrowthMultiplier());
+    ImGui::Text("Income multiplier : %.2fx", soil.getRewardMultiplier());
 
     ImGui::End();
 
@@ -140,6 +163,15 @@ void Game::processEvents() {
 
 void Game::update(sf::Time elapsedTime) {
   // Gestion du temps, effets temporaires, auto-click, etc.
+  for (auto it = activeEffects.begin(); it != activeEffects.end(); ) {
+    it->tick(*this);
+    if (it->isExpired()) {
+      delete it->getEffect(); // Nettoyer la mémoire
+      it = activeEffects.erase(it);
+    } else {
+      ++it;
+    }
+  }
 }
 
 void Game::render() {
@@ -181,10 +213,10 @@ void Game::plantNextSeed() {
 
   auto newSeed = SeedFactory::createSeed(typeToPlant);
 
-  int growthPenalty = soil.getDegradationPenalty();
-  float rewardMultiplier = soil.getRewardMultiplier();
+  float totalGrowthMultiplier = computeTotalGrowthMultiplier();
+  float totalRewardMultiplier = computeTotalRewardMultiplier();
 
-  newSeed->applyPenaltiesAndBoosts(growthPenalty, rewardMultiplier);
+  newSeed->applyMultipliers(totalGrowthMultiplier, totalRewardMultiplier);
 
   std::cout << "Nouvelle graine : " << SeedFactory::SeedTypeToString(typeToPlant)
             << ", clics nécessaires : " << newSeed->getClicksToGrow() << "\n";
@@ -194,10 +226,28 @@ void Game::plantNextSeed() {
 
 void Game::addMoney(int amount) {
   mMoney += amount;
-  mMoneyText.setString("Argent: " + std::to_string(mMoney));
+  mMoneyText.setString("Money: " + std::to_string(mMoney));
 }
 
 void Game::removeMoney(int amount) {
   mMoney -= amount;
-  mMoneyText.setString("Argent: " + std::to_string(mMoney));
+  mMoneyText.setString("Money: " + std::to_string(mMoney));
+}
+
+float Game::computeTotalGrowthMultiplier() const {
+  float total = 1.0f;
+  for (const auto& effect : activeEffects) {
+    total *= effect.getEffect()->getGrowthMultiplier();
+  }
+  total *= soil.getGrowthMultiplier();  // effet du sol
+  return total;
+}
+
+float Game::computeTotalRewardMultiplier() const {
+  float total = 1.0f;
+  for (const auto& effect : activeEffects) {
+    total *= effect.getEffect()->getRewardMultiplier();
+  }
+  total *= soil.getRewardMultiplier();  // effet du sol
+  return total;
 }

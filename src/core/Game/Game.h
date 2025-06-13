@@ -31,6 +31,10 @@ public:
 	SeedReservoir& getSeedReservoir() { return seedReservoir; }
 	int getMoney() { return mMoney; }
 
+	float computeTotalGrowthMultiplier() const;
+	float computeTotalRewardMultiplier() const;
+
+
 
 
 
@@ -56,9 +60,12 @@ private:
 
 	Seed* currentPlantOnPlot;
 	SeedReservoir seedReservoir;
-	std::list<ActiveEffect*> activeEffects;
+	std::list<ActiveEffect> activeEffects;
 	Soil soil;
 	AutoClicker autoClicker;
+
+	float growthBonus = 1.0f;  // 1.0f = normal, <1 = plus rapide
+	float rewardBonus = 1.0f;  // 1.0f = normal, >1 = plus d'argent
 
 
 };
