@@ -94,17 +94,17 @@ void Game::run() {
 
     /*if (ImGui::CollapsingHeader("Effets Utilitaires (Debug)")) {
       if (ImGui::Button("Fertilizer")) {
-        Effect* e = new Fertilizer();
+        auto e = std::make_unique<Fertilizer>();
         e->applyEffect(*this);
         activeEffects.emplace_back(e, 20);
       }
       if (ImGui::Button("Pesticide")) {
-        Effect* e = new Pesticide();
+        auto e = std::make_unique<Pesticide>();
         e->applyEffect(*this);
         activeEffects.emplace_back(e, 15);
       }
       if (ImGui::Button("Harvester")) {
-        Effect* e = new Harvester();
+        auto e = std::make_unique<Harvester>();
         e->applyEffect(*this);
         activeEffects.emplace_back(e, 30);
       }
@@ -166,7 +166,6 @@ void Game::update(sf::Time elapsedTime) {
   for (auto it = activeEffects.begin(); it != activeEffects.end(); ) {
     it->tick(*this);
     if (it->isExpired()) {
-      delete it->getEffect(); // Nettoyer la mémoire
       it = activeEffects.erase(it);
     } else {
       ++it;

@@ -1,13 +1,14 @@
 #pragma once
 #include "Effect.h"
+#include <memory>
 
 class ActiveEffect {
 private:
-	Effect* effect;
+	std::unique_ptr<Effect> effect;
 	int remainingDuration;
 
 public:
-	ActiveEffect(Effect* effect, int duration);
+	ActiveEffect(std::unique_ptr<Effect> effect, int duration);
 	void tick(Game& game);
 	Effect* getEffect() const;
 	bool isExpired() const;
