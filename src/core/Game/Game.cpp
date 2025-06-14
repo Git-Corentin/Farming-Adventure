@@ -92,24 +92,7 @@ void Game::run() {
       chest.open(*this);
     }
 
-    /*if (ImGui::CollapsingHeader("Effets Utilitaires (Debug)")) {
-      if (ImGui::Button("Fertilizer")) {
-        auto e = std::make_unique<Fertilizer>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(e, 20);
-      }
-      if (ImGui::Button("Pesticide")) {
-        auto e = std::make_unique<Pesticide>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(e, 15);
-      }
-      if (ImGui::Button("Harvester")) {
-        auto e = std::make_unique<Harvester>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(e, 30);
-      }
-      // etc.
-    }*/
+
     ImGui::End();
 
     ImGui::Begin("Soil");
@@ -122,6 +105,29 @@ void Game::run() {
     ImGui::Text("Click penalty : %.2fx", soil.getGrowthMultiplier());
     ImGui::Text("Income multiplier : %.2fx", soil.getRewardMultiplier());
 
+    ImGui::End();
+
+    ImGui::Begin("Active Effects");
+
+    ImGui::Text("Total Growth Multiplier: %.2fx", computeTotalGrowthMultiplier());
+    ImGui::Text("Total Reward Multiplier: %.2fx", computeTotalRewardMultiplier());
+
+    ImGui::Separator();
+    ImGui::Text("Effets Actifs :");
+
+    for (const auto& effect : activeEffects) {
+      const std::string& name = effect.getEffect()->getName();  // Assure-toi que getName() est disponible
+      float secondsLeft = effect.getDuration().asSeconds();
+      ImGui::Text("%s - %.1f s restantes", name.c_str(), secondsLeft);
+    }
+    if (ImGui::CollapsingHeader("Effets Utilitaires (Debug)")) {
+      if (ImGui::Button("Fertilizer")) {
+        auto e = std::make_unique<Fertilizer>();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(std::move(e), sf::seconds(20));
+      }
+
+    }
     ImGui::End();
 
     while (timeSinceLastUpdate > TimePerFrame) {
@@ -164,7 +170,7 @@ void Game::processEvents() {
 void Game::update(sf::Time elapsedTime) {
   // Gestion du temps, effets temporaires, auto-click, etc.
   for (auto it = activeEffects.begin(); it != activeEffects.end(); ) {
-    it->tick(*this);
+    it->tick(*this, elapsedTime);
     if (it->isExpired()) {
       it = activeEffects.erase(it);
     } else {

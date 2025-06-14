@@ -1,13 +1,13 @@
 #include "ActiveEffect.h"
 #include "Game/Game.h"
 
-ActiveEffect::ActiveEffect(std::unique_ptr<Effect> effect, int duration)
+ActiveEffect::ActiveEffect(std::unique_ptr<Effect> effect, sf::Time duration)
 	: effect(std::move(effect)), remainingDuration(duration) {}
 
-void ActiveEffect::tick(Game& game) {
-	if (remainingDuration > 0) {
-		remainingDuration--;
-		if (remainingDuration == 0) {
+void ActiveEffect::tick(Game& game, sf::Time elapsed) {
+	if (remainingDuration > sf::Time::Zero) {
+		remainingDuration-=elapsed;
+		if (remainingDuration <= sf::Time::Zero) {
 			effect->removeEffect(game);
 		}
 	}
@@ -18,5 +18,5 @@ Effect* ActiveEffect::getEffect() const {
 }
 
 bool ActiveEffect::isExpired() const {
-	return remainingDuration == 0;
+	return remainingDuration <= sf::Time::Zero;
 }

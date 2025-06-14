@@ -10,9 +10,12 @@ public:
 
 class Fertilizer : public Effect {
 public:
-	Fertilizer();
+	explicit Fertilizer(float multiplier = 0.7f);
 	void applyEffect(Game& game) override;
 	void removeEffect(Game& game) override;
+	float getGrowthMultiplier() const override;
+private:
+	float growthMultiplier;
 };
 
 class Harvester : public Effect {

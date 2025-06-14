@@ -3,3 +3,10 @@
 //
 
 #include "Effect.h"
+float Effect::getGrowthMultiplier() const {
+	return 1.0f;
+}
+
+float Effect::getRewardMultiplier() const {
+	return 1.0f;
+}

@@ -17,4 +17,6 @@ public:
 
 	float getGrowthMultiplier() const override;
 	float getRewardMultiplier() const override;
+
+	virtual std::string getName() const { return name; }
 };
