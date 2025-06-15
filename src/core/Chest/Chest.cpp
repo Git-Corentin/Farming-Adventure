@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 #include <map>
+#include "Effect/Utility.h"  // Pour les effets utilitaires
 
 #include "Game/Game.h"
 #include <iostream>
@@ -15,7 +16,7 @@ SeedChest::SeedChest() {
 }
 
 UtilityChest::UtilityChest() {
-	cost = 150;
+	cost = 60;
 }
 
 void SeedChest::open(Game& game) {
@@ -66,5 +67,59 @@ void SeedChest::open(Game& game) {
 }
 
 void UtilityChest::open(Game& game) {
-	// À implémenter plus tard : effets, bonus, etc.
+	if (game.getMoney() < cost) {
+		std::cout << "Pas assez d'argent pour ouvrir le coffre (" << cost << " requis)\n";
+		return;
+	}
+
+	game.removeMoney(cost);
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	static const std::vector<std::pair<std::string, int>> utilityWeights = {
+		{"Fertilizer", 400},
+		{"Harvester", 300},
+		{"Pesticide", 250},
+		{"CleaningRobot", 150},
+		{"EconomicCrisis", 100},
+		{"GMO", 80}
+	};
+
+	std::vector<std::string> effectNames;
+	std::vector<int> weights;
+
+	for (const auto& [name, weight] : utilityWeights) {
+		effectNames.push_back(name);
+		weights.push_back(weight);
+
+	}
+
+	std::discrete_distribution<> dist(weights.begin(), weights.end());
+
+	std::string selected = effectNames[dist(gen)];
+
+	std::unique_ptr<Effect> effect;
+	sf::Time duration = sf::seconds(20);  // Par défaut
+
+	if (selected == "Fertilizer") {
+		effect = std::make_unique<Fertilizer>();
+	} else if (selected == "Harvester") {
+		effect = std::make_unique<Harvester>();
+	} else if (selected == "Pesticide") {
+		effect = std::make_unique<Pesticide>();
+	} else if (selected == "CleaningRobot") {
+		effect = std::make_unique<CleaningRobot>();
+		duration = sf::seconds(0);  // Instantané
+	} else if (selected == "EconomicCrisis") {
+		effect = std::make_unique<EconomicCrisis>();
+	} else if (selected == "GMO") {
+		effect = std::make_unique<GMO>();
+	}
+
+	if (effect) {
+		game.addActiveEffect(std::move(effect), duration);
+		std::cout << " → Obtenu : " << selected << "\n";
+	}
 }
+

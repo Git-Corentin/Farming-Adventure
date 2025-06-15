@@ -20,3 +20,7 @@ Effect* ActiveEffect::getEffect() const {
 bool ActiveEffect::isExpired() const {
 	return remainingDuration <= sf::Time::Zero;
 }
+
+void ActiveEffect::resetDuration(sf::Time newDuration) {
+	remainingDuration = newDuration;
+}

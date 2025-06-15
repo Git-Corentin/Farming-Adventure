@@ -42,7 +42,8 @@ public:
 
 	bool isPesticideActive() const;
 
-
+	void addActiveEffect(std::unique_ptr<Effect> effect, sf::Time duration);
+    bool isEffectActive(const std::string& effectName) const;
 
 
 private:
@@ -73,7 +74,6 @@ private:
 
 	float growthBonus = 1.0f;  // 1.0f = normal, <1 = plus rapide
 	float rewardBonus = 1.0f;  // 1.0f = normal, >1 = plus d'argent
-
 
 };
 

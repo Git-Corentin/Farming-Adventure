@@ -88,8 +88,18 @@ void Game::run() {
 
       seedReservoir.addSeed(randomType, 1);
     }
+
+    if (ImGui::Button("Give money")) {
+      addMoney(10000);
+    }
+
     if (ImGui::Button("Open seed box")) {
       SeedChest chest;
+      chest.open(*this);
+    }
+
+    if (ImGui::Button("Open utility box")) {
+      UtilityChest chest;
       chest.open(*this);
     }
 
@@ -294,6 +304,31 @@ void Game::autoClickPlot() const {
 bool Game::isPesticideActive() const {
   for (const auto& effect : activeEffects) {
     if (dynamic_cast<const Pesticide*>(effect.getEffect())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void Game::addActiveEffect(std::unique_ptr<Effect> newEffect, sf::Time duration) {
+  const std::string& name = newEffect->getName();
+
+  for (auto& active : activeEffects) {
+    if (active.getEffect()->getName() == name) {
+      // Effet déjà actif → reset la durée seulement
+      active.resetDuration(duration);
+      return;
+    }
+  }
+
+  // Sinon, effet pas encore actif → on l'ajoute
+  newEffect->applyEffect(*this);
+  activeEffects.emplace_back(std::move(newEffect), duration);
+}
+
+bool Game::isEffectActive(const std::string& effectName) const {
+  for (const auto& effect : activeEffects) {
+    if (effect.getEffect()->getName() == effectName) {
       return true;
     }
   }

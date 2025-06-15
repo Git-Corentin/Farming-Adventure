@@ -15,4 +15,5 @@ public:
 	bool isExpired() const;
 
 	sf::Time getDuration() const { return remainingDuration; }
+	void resetDuration(sf::Time newDuration);
 };
