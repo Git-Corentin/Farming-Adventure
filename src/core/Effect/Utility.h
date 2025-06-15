@@ -13,7 +13,7 @@ public:
 	explicit Fertilizer(float multiplier = 0.7f);
 	void applyEffect(Game& game) override;
 	void removeEffect(Game& game) override;
-	float getGrowthMultiplier() const override;
+	float getGrowthMultiplier() const override { return growthMultiplier; }
 private:
 	float growthMultiplier;
 };
@@ -33,14 +33,22 @@ public:
 
 class GMO : public Effect {
 public:
-	GMO();
+	explicit GMO(float growthMultiplier = 0.8f, float rewardMultiplier = 1.2f);
 	void applyEffect(Game& game) override;
 	void removeEffect(Game& game) override;
+	float getGrowthMultiplier() const override { return growthMultiplier; }
+	float getRewardMultiplier() const override { return rewardMultiplier; }
+private:
+	float growthMultiplier;
+	float rewardMultiplier;
 };
 
 class EconomicCrisis : public Effect {
 public:
-	EconomicCrisis();
+	explicit EconomicCrisis(float rewardMultiplier = 1.5f);
 	void applyEffect(Game& game) override;
 	void removeEffect(Game& game) override;
+	float getRewardMultiplier() const override { return rewardMultiplier; }
+private:
+	float rewardMultiplier;
 };

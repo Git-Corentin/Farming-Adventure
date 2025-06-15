@@ -21,10 +21,6 @@ void Fertilizer::removeEffect(Game& game) {
     std::cout << "Fertilizer expired\n";
 }
 
-float Fertilizer::getGrowthMultiplier() const {
-    return growthMultiplier;
-}
-
 // ______HARVESTER______
 
 Harvester::Harvester() {
@@ -67,3 +63,38 @@ void CleaningRobot::applyEffect(Game& game) {
     std::cout << "Cleaning Robot applied: soil degradation reset\n";
     game.resetSoil();
 }
+
+
+// ______Economic Crisis______
+
+EconomicCrisis::EconomicCrisis(float rewardMultiplier)
+    : rewardMultiplier(rewardMultiplier) {
+    name = "Economic Crisis";
+    duration = 20;
+}
+
+void EconomicCrisis::applyEffect(Game& game) {
+    std::cout << "reward multiplier = " << rewardMultiplier << "\n";
+}
+
+void EconomicCrisis::removeEffect(Game& game) {
+    std::cout << "Economic Crisis expired\n";
+}
+
+// ______GMO______
+
+GMO::GMO(float growthMultiplier, float rewardMultiplier)
+    : growthMultiplier(growthMultiplier), rewardMultiplier(rewardMultiplier) {
+    name = "GMO";
+    duration = 20;
+}
+
+void GMO::applyEffect(Game& game) {
+    std::cout << "GMO applied: growth multiplier = " << growthMultiplier
+              << ", reward multiplier = " << rewardMultiplier << "\n";
+}
+
+void GMO::removeEffect(Game& game) {
+    std::cout << "GMO expired\n";
+}
+

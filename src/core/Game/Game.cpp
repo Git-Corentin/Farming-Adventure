@@ -113,30 +113,40 @@ void Game::run() {
     ImGui::Text("Total Reward Multiplier: %.2fx", computeTotalRewardMultiplier());
 
     ImGui::Separator();
-    ImGui::Text("Effets Actifs :");
+
+
+    if (ImGui::Button("Fertilizer")) {
+      auto e = std::make_unique<Fertilizer>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
+    if (ImGui::Button("Harvester")) {
+      auto e = std::make_unique<Harvester>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
+    if (ImGui::Button("Cleaning Robot")) {
+      auto e = std::make_unique<CleaningRobot>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(0));
+    }
+    if (ImGui::Button("Economic Crisis")) {
+      auto e = std::make_unique<EconomicCrisis>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
+    if (ImGui::Button("GMO")) {
+      auto e = std::make_unique<GMO>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
+
+    ImGui::Text("Active effects :");
 
     for (const auto& effect : activeEffects) {
       const std::string& name = effect.getEffect()->getName();  // Assure-toi que getName() est disponible
       float secondsLeft = effect.getDuration().asSeconds();
-      ImGui::Text("%s - %.1f s restantes", name.c_str(), secondsLeft);
-    }
-    if (ImGui::CollapsingHeader("Effets Utilitaires (Debug)")) {
-      if (ImGui::Button("Fertilizer")) {
-        auto e = std::make_unique<Fertilizer>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(std::move(e), sf::seconds(20));
-      }
-      if (ImGui::Button("Harvester")) {
-        auto e = std::make_unique<Harvester>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(std::move(e), sf::seconds(20));
-      }
-      if (ImGui::Button("Cleaning Robot")) {
-        auto e = std::make_unique<CleaningRobot>();
-        e->applyEffect(*this);
-        activeEffects.emplace_back(std::move(e), sf::seconds(0));
-      }
-
+      ImGui::Text("%s - %.1f s left", name.c_str(), secondsLeft);
     }
     ImGui::End();
 
