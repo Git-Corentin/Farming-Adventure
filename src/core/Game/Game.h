@@ -40,6 +40,8 @@ public:
 
 	void resetSoil() { soil.reset(); }
 
+	bool isPesticideActive() const;
+
 
 
 

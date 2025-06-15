@@ -18,6 +18,7 @@
 #include "Effect/EffectInterface.h"
 
 
+
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game(): mMoneyText(mFont) {
@@ -137,6 +138,11 @@ void Game::run() {
     }
     if (ImGui::Button("GMO")) {
       auto e = std::make_unique<GMO>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
+    if (ImGui::Button("Pesticide")) {
+      auto e = std::make_unique<Pesticide>();
       e->applyEffect(*this);
       activeEffects.emplace_back(std::move(e), sf::seconds(20));
     }
@@ -283,4 +289,13 @@ void Game::autoClickPlot() const {
   if (mClickablePlot) {
     mClickablePlot->handleClick(sf::Vector2f(-1, -1), true); // Position fictive si pas utilisée
   }
+}
+
+bool Game::isPesticideActive() const {
+  for (const auto& effect : activeEffects) {
+    if (dynamic_cast<const Pesticide*>(effect.getEffect())) {
+      return true;
+    }
+  }
+  return false;
 }

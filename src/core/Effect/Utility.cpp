@@ -45,7 +45,7 @@ Pesticide::Pesticide() {
 }
 
 void Pesticide::applyEffect(Game& game) {
-    std::cout << "Pesticide applied: no direct effect\n";
+    std::cout << "Pesticide applied\n";
 }
 
 void Pesticide::removeEffect(Game& game) {

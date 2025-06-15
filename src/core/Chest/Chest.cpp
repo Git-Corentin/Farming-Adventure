@@ -38,7 +38,15 @@ void SeedChest::open(Game& game) {
 
 	std::vector<SeedType> types;
 	std::vector<int> weights;
-	for (const auto& [type, weight] : seedWeights) {
+	bool pesticide = game.isPesticideActive();
+
+	for (const auto& [type, baseWeight] : seedWeights) {
+		int weight = baseWeight;
+
+		if (pesticide && weight <= 250) {
+			// Augmenter artificiellement le poids des graines rares (poids faibles)
+			weight *= 10; // ou *3 pour un effet plus fort
+		}
 		types.push_back(type);
 		weights.push_back(weight);
 	}
