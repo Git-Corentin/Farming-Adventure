@@ -13,4 +13,8 @@ public:
 
 	float getGrowthMultiplier() const override;
 	float getRewardMultiplier() const override;
+
+	void reset() {
+        degradationLevel = 0;  // Réinitialise le sol
+    }
 };

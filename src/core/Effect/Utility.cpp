@@ -40,3 +40,30 @@ void Harvester::applyEffect(Game& game) {
 void Harvester::removeEffect(Game& game) {
     std::cout << "Harvester expired\n";
 }
+
+// ______PESTICIDE______
+
+Pesticide::Pesticide() {
+    name = "Pesticide";
+    duration = 20;
+}
+
+void Pesticide::applyEffect(Game& game) {
+    std::cout << "Pesticide applied: no direct effect\n";
+}
+
+void Pesticide::removeEffect(Game& game) {
+    std::cout << "Pesticide expired\n";
+}
+
+// ______CLEANING ROBOT______
+
+CleaningRobot::CleaningRobot() {
+    name = "Cleaning Robot";
+    duration = 0;
+}
+
+void CleaningRobot::applyEffect(Game& game) {
+    std::cout << "Cleaning Robot applied: soil degradation reset\n";
+    game.resetSoil();
+}

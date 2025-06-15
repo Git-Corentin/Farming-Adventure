@@ -131,6 +131,11 @@ void Game::run() {
         e->applyEffect(*this);
         activeEffects.emplace_back(std::move(e), sf::seconds(20));
       }
+      if (ImGui::Button("Cleaning Robot")) {
+        auto e = std::make_unique<CleaningRobot>();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(std::move(e), sf::seconds(0));
+      }
 
     }
     ImGui::End();

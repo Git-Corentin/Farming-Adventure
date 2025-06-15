@@ -38,6 +38,7 @@ public:
 	void autoClickPlot() const;
 	AutoClicker& getAutoClicker() {return autoClicker;}
 
+	void resetSoil() { soil.reset(); }
 
 
 
