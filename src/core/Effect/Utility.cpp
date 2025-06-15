@@ -5,6 +5,7 @@
 #include "Effect/Effect.h"
 #include <iostream>
 
+// ______FERTILIZER______
 Fertilizer::Fertilizer(float multiplier)
     : growthMultiplier(multiplier) {
     name = "Fertilizer";
@@ -22,4 +23,20 @@ void Fertilizer::removeEffect(Game& game) {
 
 float Fertilizer::getGrowthMultiplier() const {
     return growthMultiplier;
+}
+
+// ______HARVESTER______
+
+Harvester::Harvester() {
+    name = "Harvester";
+    duration = 20;
+}
+
+void Harvester::applyEffect(Game& game) {
+    std::cout << "Harvester launched: auto-clicking\n";
+    game.getAutoClicker().start(duration);
+}
+
+void Harvester::removeEffect(Game& game) {
+    std::cout << "Harvester expired\n";
 }

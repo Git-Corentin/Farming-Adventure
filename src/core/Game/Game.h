@@ -10,6 +10,7 @@
 #include "Soil.h"
 #include <list>
 #include "Enum/ChestType.h"
+#include "AutoClicker.h"
 
 class Seed; // Fwd declarations de tes entités internes
 #include "ClickablePlot.h"
@@ -29,10 +30,13 @@ public:
 	void addMoney(int amount);
 
 	SeedReservoir& getSeedReservoir() { return seedReservoir; }
-	int getMoney() { return mMoney; }
+	int getMoney() const { return mMoney; }
 
 	float computeTotalGrowthMultiplier() const;
 	float computeTotalRewardMultiplier() const;
+
+	void autoClickPlot() const;
+	AutoClicker& getAutoClicker() {return autoClicker;}
 
 
 

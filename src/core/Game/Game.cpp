@@ -126,6 +126,11 @@ void Game::run() {
         e->applyEffect(*this);
         activeEffects.emplace_back(std::move(e), sf::seconds(20));
       }
+      if (ImGui::Button("Harvester")) {
+        auto e = std::make_unique<Harvester>();
+        e->applyEffect(*this);
+        activeEffects.emplace_back(std::move(e), sf::seconds(20));
+      }
 
     }
     ImGui::End();
@@ -177,6 +182,8 @@ void Game::update(sf::Time elapsedTime) {
       ++it;
     }
   }
+
+  autoClicker.tick(*this, elapsedTime);
 }
 
 void Game::render() {
@@ -255,4 +262,10 @@ float Game::computeTotalRewardMultiplier() const {
   }
   total *= soil.getRewardMultiplier();  // effet du sol
   return total;
+}
+
+void Game::autoClickPlot() const {
+  if (mClickablePlot) {
+    mClickablePlot->handleClick(sf::Vector2f(-1, -1), true); // Position fictive si pas utilisée
+  }
 }

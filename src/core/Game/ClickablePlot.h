@@ -11,7 +11,7 @@ public:
 	ClickablePlot(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& seedName);
 
 	void draw(sf::RenderWindow& window) const;
-	void handleClick(sf::Vector2f mousePosition);
+	void handleClick(sf::Vector2f mousePosition, bool autoClick = false);
 
 	void setSeed(std::shared_ptr<Seed> seed);
 	void setGame(Game* game);

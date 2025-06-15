@@ -37,8 +37,8 @@ void ClickablePlot::setSeed(std::shared_ptr<Seed> seed) {
 	mCurrentSeed->resetClicks();
 }
 
-void ClickablePlot::handleClick(sf::Vector2f mousePosition) {
-	if (!mCurrentSeed || !mShape.getGlobalBounds().contains(mousePosition)) return;
+void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
+	if (!mCurrentSeed || !mShape.getGlobalBounds().contains(mousePosition) and autoClick == false) return;
 
 	mCurrentSeed->incrementClicks();
 
