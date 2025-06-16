@@ -24,3 +24,9 @@ public:
 	Thief();
 	void applyEffect(Game& game) override;
 };
+
+class Expiration : public Effect {
+public:
+	Expiration();
+	void applyEffect(Game& game) override;
+};

@@ -36,6 +36,7 @@ class SeedReservoir {
   + int getSeedQuantity(SeedType type)
   + void addSeed(SeedType type, int quantity)
   + void removeSeed(SeedType type, int quantity)
+  + void removeRandomSeeds(int quantity)
   + void setSelectedSeed(SeedType type)
   + SeedType getSelectedSeed()
   + SeedType getRandomNonWheatSeed()
@@ -109,10 +110,12 @@ Effect <|-- EconomicCrisis
 class Storm
 class Frost
 class Thief
+class Expiration
 
 Effect <|-- Storm
 Effect <|-- Frost
 Effect <|-- Thief
+Effect <|-- Expiration
 
 ' === Énumérations ===
 

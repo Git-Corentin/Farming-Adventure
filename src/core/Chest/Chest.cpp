@@ -128,6 +128,10 @@ void UtilityChest::open(Game& game) {
 		effect = std::make_unique<Thief>();
 		duration = sf::seconds(0);  // Instantané
 	}
+	else if (selected == "Expiration") {
+		effect = std::make_unique<Expiration>();
+		duration = sf::seconds(0);  // Instantané
+	}
 
 	if (effect) {
 		game.addActiveEffect(std::move(effect), duration);

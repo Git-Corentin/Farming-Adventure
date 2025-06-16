@@ -36,7 +36,19 @@ Thief::Thief() {
 }
 
 void Thief::applyEffect(Game& game) {
-	int stolenAmount = game.getMoney() / 3;
+	uint64_t stolenAmount = game.getMoney() / 3;
 	game.removeMoney(stolenAmount);
 	std::cout << "Thief applied: " << stolenAmount << " coins stolen\n";
+}
+
+
+// ______EXPIRATION______
+Expiration::Expiration() {
+	name = "Expiration";
+	duration = 0; // Instantané
+}
+
+void Expiration::applyEffect(Game& game) {
+	std::cout << "Expiration applied: some seeds have expired\n";
+	game.getSeedReservoir().removeRandomSeeds(3);
 }

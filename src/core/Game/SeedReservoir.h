@@ -2,8 +2,11 @@
 
 
 #include <map>
+#include <random>
+#include <iostream>
 
 #include "Enum/SeedType.h"
+#include "SeedFactory.h"
 
 
 class SeedReservoir {
@@ -15,6 +18,7 @@ public:
 	int getSeedQuantity(SeedType type) const;
 	void addSeed(SeedType type, int quantity);
 	void removeSeed(SeedType type, int quantity);
+	void removeRandomSeeds(int maxQuantity);
 	void setSelectedSeed(SeedType type);
 	SeedType getSelectedSeed() const;
 

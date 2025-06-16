@@ -47,3 +47,29 @@ void SeedReservoir::setSelectedSeed(SeedType type) {
 SeedType SeedReservoir::getSelectedSeed() const {
 	return selectedSeedType;
 }
+
+void SeedReservoir::removeRandomSeeds(int quantity) {
+	std::vector<SeedType> availableSeeds;
+	for (const auto& [type, qty] : seeds) {
+		if (qty > 0 && !isWheat(type)) {
+			availableSeeds.push_back(type);
+		}
+	}
+	if (availableSeeds.empty()) {
+		std::cout << "No seeds to remove.\n";
+		return; // No seeds in storage
+	}
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	
+	for (int i = 0; i < quantity && !availableSeeds.empty(); ++i) {
+		std::uniform_int_distribution<> dist(0, availableSeeds.size() - 1);
+		int index = dist(gen);
+		SeedType type = availableSeeds[index];
+		removeSeed(type, 1);
+		availableSeeds.erase(availableSeeds.begin() + index);
+		std::cout << "Removed a " << SeedFactory::SeedTypeToString(type) << " from the reservoir.\n";
+	}
+
+}

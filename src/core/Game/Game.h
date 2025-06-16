@@ -30,7 +30,7 @@ public:
 	void addMoney(int amount);
 
 	SeedReservoir& getSeedReservoir() { return seedReservoir; }
-	int getMoney() const { return mMoney; }
+	uint64_t getMoney() const { return mMoney; }
 
 	float computeTotalGrowthMultiplier() const;
 	float computeTotalRewardMultiplier() const;
@@ -38,6 +38,7 @@ public:
 	void autoClickPlot() const;
 	AutoClicker& getAutoClicker() {return autoClicker;}
 
+	Soil getSoil() const { return soil; }
 	void resetSoil() { soil.reset(); }
 	void degradeSoil(int value) { soil.degrade(value); }
 
@@ -64,7 +65,7 @@ private:
 
 	std::unique_ptr<ClickablePlot> mClickablePlot;
 
-	int mMoney = 0;
+	uint64_t mMoney = 0;
 	sf::Text mMoneyText;
 
 	Seed* currentPlantOnPlot;

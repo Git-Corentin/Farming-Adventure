@@ -175,6 +175,12 @@ void Game::run() {
 		activeEffects.emplace_back(std::move(e), sf::seconds(0));
 	}
 
+	if (ImGui::Button("Expiration")) {
+		auto e = std::make_unique<Expiration>();
+		e->applyEffect(*this);
+		activeEffects.emplace_back(std::move(e), sf::seconds(0));
+	}
+
     ImGui::Text("Active effects :");
 
     for (const auto& effect : activeEffects) {
