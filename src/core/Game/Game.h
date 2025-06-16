@@ -39,6 +39,7 @@ public:
 	AutoClicker& getAutoClicker() {return autoClicker;}
 
 	void resetSoil() { soil.reset(); }
+	void degradeSoil(int value) { soil.degrade(value); }
 
 	bool isPesticideActive() const;
 

@@ -157,6 +157,24 @@ void Game::run() {
       activeEffects.emplace_back(std::move(e), sf::seconds(20));
     }
 
+	if (ImGui::Button("Storm")) {
+		auto e = std::make_unique<Storm>();
+		e->applyEffect(*this);
+		activeEffects.emplace_back(std::move(e), sf::seconds(0));
+	}
+
+	if (ImGui::Button("Frost")) {
+		auto e = std::make_unique<Frost>();
+		e->applyEffect(*this);
+		activeEffects.emplace_back(std::move(e), sf::seconds(20));
+	}
+
+	if (ImGui::Button("Thief")) {
+		auto e = std::make_unique<Thief>();
+		e->applyEffect(*this);
+		activeEffects.emplace_back(std::move(e), sf::seconds(0));
+	}
+
     ImGui::Text("Active effects :");
 
     for (const auto& effect : activeEffects) {

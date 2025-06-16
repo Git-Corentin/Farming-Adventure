@@ -17,3 +17,7 @@ float Soil::getRewardMultiplier() const {
 float Soil::getDegradationRatio() const {
 	return static_cast<float>(degradationLevel) / maxDegradationLevel;
 }
+
+void Soil::degrade(int value) {
+	degradationLevel = std::min(degradationLevel + value, maxDegradationLevel);
+}

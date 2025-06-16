@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "Effect/Utility.h"  // Pour les effets utilitaires
+#include "Effect/Malus.h" // Pour les effets de malus
 
 #include "Game/Game.h"
 #include <iostream>
@@ -77,19 +78,22 @@ void UtilityChest::open(Game& game) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
-	static const std::vector<std::pair<std::string, int>> utilityWeights = {
+	static const std::vector<std::pair<std::string, int>> effectWeights = {
 		{"Fertilizer", 400},
 		{"Harvester", 300},
 		{"Pesticide", 250},
 		{"CleaningRobot", 150},
 		{"EconomicCrisis", 100},
-		{"GMO", 80}
+		{"GMO", 80},
+		{"Storm", 150},
+		{"Frost", 200},
+		{"Thief", 250}
 	};
 
 	std::vector<std::string> effectNames;
 	std::vector<int> weights;
 
-	for (const auto& [name, weight] : utilityWeights) {
+	for (const auto& [name, weight] : effectWeights) {
 		effectNames.push_back(name);
 		weights.push_back(weight);
 
@@ -115,6 +119,14 @@ void UtilityChest::open(Game& game) {
 		effect = std::make_unique<EconomicCrisis>();
 	} else if (selected == "GMO") {
 		effect = std::make_unique<GMO>();
+	} else if (selected == "Storm") {
+		effect = std::make_unique<Storm>();
+		duration = sf::seconds(0);  // Instantané
+	} else if (selected == "Frost") {
+		effect = std::make_unique<Frost>();
+	} else if (selected == "Thief") {
+		effect = std::make_unique<Thief>();
+		duration = sf::seconds(0);  // Instantané
 	}
 
 	if (effect) {
