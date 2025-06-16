@@ -296,7 +296,7 @@ void Game::addMoney(uint64_t amount) {
 		std::cout << "I don't know how you achieved to get this much money but you won't get any further.\n";
         std::cout << "Feel the curse of Ceres !\n";
         mMoney = 0;
-		seedReservoir.removeRandomSeeds(1000); // Perte de (quasi-)toutes les graines
+		seedReservoir.removeAllSeeds(); // Perte de toutes les graines
 		return;
 	}
     mMoney += amount;

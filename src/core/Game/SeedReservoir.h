@@ -19,6 +19,7 @@ public:
 	void addSeed(SeedType type, int quantity);
 	void removeSeed(SeedType type, int quantity);
 	void removeRandomSeeds(int maxQuantity);
+	void removeAllSeeds();
 	void setSelectedSeed(SeedType type);
 	SeedType getSelectedSeed() const;
 

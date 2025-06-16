@@ -73,3 +73,9 @@ void SeedReservoir::removeRandomSeeds(int quantity) {
 	}
 
 }
+
+void SeedReservoir::removeAllSeeds() {
+	seeds.clear();
+	selectedSeedType = SeedType::WHEAT; // Reset to wheat
+	std::cout << "Everything was lost...\n";
+}
