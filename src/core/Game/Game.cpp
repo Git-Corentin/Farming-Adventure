@@ -291,14 +291,21 @@ void Game::plantNextSeed() {
   mClickablePlot->setSeed(newSeed);
 }
 
-void Game::addMoney(int amount) {
-  mMoney += amount;
-  mMoneyText.setString("Money: " + std::to_string(mMoney));
+void Game::addMoney(uint64_t amount) {
+    if (maxMoney - mMoney < amount) {
+		std::cout << "I don't know how you achieved to get this much money but you won't get any further.\n";
+        std::cout << "Feel the curse of Ceres !\n";
+        mMoney = 0;
+		seedReservoir.removeRandomSeeds(1000); // Perte de (quasi-)toutes les graines
+		return;
+	}
+    mMoney += amount;
+    mMoneyText.setString("Money: " + std::to_string(mMoney));
 }
 
 void Game::removeMoney(int amount) {
-  mMoney -= amount;
-  mMoneyText.setString("Money: " + std::to_string(mMoney));
+    mMoney -= amount;
+    mMoneyText.setString("Money: " + std::to_string(mMoney));
 }
 
 float Game::computeTotalGrowthMultiplier() const {

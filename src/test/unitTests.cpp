@@ -19,8 +19,9 @@ TEST(SeedLogic, BacksToWheatWhenNoSeeds) {
     EXPECT_EQ(game.getSeedReservoir().getSelectedSeed(), SeedType::WHEAT);
 }
 
-TEST(MoneyLogic, NoNegativeMoneyAmount) {
+TEST(MoneyLogic, NoOverflowMoneyAmount) {
 	Game game;
-	game.addMoney(2147483648); // Maximum positive value for int +1
-	ASSERT_GT(game.getMoney(), 0); // Should not allow money to exceed int limits
+	game.addMoney(9223372036854775807); // Maximum positive value for uint64_t
+	game.addMoney(1); // Attempt to exceed the limit
+	ASSERT_EQ(game.getMoney(), 0); // Should not allow money to exceed uint64_t limits and sends the player back to 0$
 }

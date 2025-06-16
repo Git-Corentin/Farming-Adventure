@@ -27,7 +27,7 @@ public:
 	void plantNextSeed();
 	void onPlotHarvested(int reward);
 	void removeMoney(int amount);
-	void addMoney(int amount);
+	void addMoney(uint64_t amount);
 
 	SeedReservoir& getSeedReservoir() { return seedReservoir; }
 	uint64_t getMoney() const { return mMoney; }
@@ -66,6 +66,7 @@ private:
 	std::unique_ptr<ClickablePlot> mClickablePlot;
 
 	uint64_t mMoney = 0;
+	uint64_t maxMoney = 9223372036854775807; //uint64_t max value
 	sf::Text mMoneyText;
 
 	Seed* currentPlantOnPlot;
