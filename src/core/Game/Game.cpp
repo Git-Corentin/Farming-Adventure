@@ -18,7 +18,6 @@
 #include "Effect/EffectInterface.h"
 
 
-
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game(): mMoneyText(mFont) {
@@ -52,15 +51,16 @@ void Game::onPlotHarvested(int baseReward) {
 }
 
 void Game::run() {
+
   sf::Clock clock;
   sf::Time timeSinceLastUpdate = sf::Time::Zero;
   mWindow.setFramerateLimit(60);
   ImGui::SFML::Init(mWindow);
+  
 
   while (mWindow.isOpen()) {
     sf::Time elapsedTime = clock.restart();
     timeSinceLastUpdate += elapsedTime;
-
     ImGui::SFML::Update(mWindow, elapsedTime);
 
 
@@ -213,7 +213,7 @@ void Game::processEvents() {
     ImGui::SFML::ProcessEvent(mWindow, *event);
 
     if (event->is<sf::Event::Closed>()) {
-      mWindow.close();
+        mWindow.close();
     } else if (const auto* mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()) {
 
       if (mouseEvent->button == sf::Mouse::Button::Left) {

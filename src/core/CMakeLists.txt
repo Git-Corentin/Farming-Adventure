@@ -35,4 +35,4 @@ target_include_directories(lib_core PUBLIC
         ${imgui_SOURCE_DIR}/backends
         ${imgui-sfml_SOURCE_DIR}
 )
-target_link_libraries(lib_core PUBLIC pugixml sfml-graphics ImGui-SFML::ImGui-SFML)
+target_link_libraries(lib_core PUBLIC pugixml sfml-graphics sfml-audio ImGui-SFML::ImGui-SFML)
