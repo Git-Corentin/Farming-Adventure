@@ -7,7 +7,7 @@ Faites pousser vos semances en cliquant sur la parcelle pour gagner de l'argent,
 
 Ouvrez un coffre et découvrez une nouvelle graine à planter, ou améliorez votre champ grâce à des outils, mais attention, l'agriculture est un jeu de chance, donc ne soyez pas surpris par les catastrophes.
 
-<img width="427" alt="GameScreen" src="https://github.com/user-attachments/assets/1d5e9646-1b75-4600-a78e-c6922aea6996" />
+<img width="502" alt="GameScreen" src="https://github.com/user-attachments/assets/0f817798-3a80-40a1-9e3e-8aa96ce9d010" />
 
 Pour générer le code de l'application :
 - Visual Studio (Windows) et cmake
