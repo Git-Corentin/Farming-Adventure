@@ -21,8 +21,6 @@
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game(): mMoneyText(mFont) {
-  assert(mFont.openFromFile("res/Sansation.ttf"));
-
   mStatisticsText.setFont(mFont);
   mStatisticsText.setPosition({5.f, 5.f});
   mStatisticsText.setCharacterSize(14);
