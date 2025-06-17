@@ -226,8 +226,7 @@ void Game::processEvents() {
     if (const auto* resizeEvent = event->getIf<sf::Event::Resized>()) {
         //Changing ClickablePlot position to the center of the window
         sf::Vector2f newposition(
-            (float)(resizeEvent->size.x) / 2,
-            (float)(resizeEvent->size.y) / 2
+            400,300
         );
         mClickablePlot->SetPosition(newposition);
     }
