@@ -20,11 +20,11 @@ UtilityChest::UtilityChest() {
 	cost = 60;
 }
 
-void SeedChest::open(Game& game) {
+bool SeedChest::open(Game& game) {
 
 	if (game.getMoney() < cost) {
 		std::cout << "Pas assez d'argent pour ouvrir le coffre (" << cost << " requis)\n";
-		return;
+		return false;
 	}
 
 	game.removeMoney(cost);
@@ -59,18 +59,21 @@ void SeedChest::open(Game& game) {
 	for (int i = 0; i < numSeeds; ++i) {
 		SeedType selected = types[dist(gen)];
 		game.getSeedReservoir().addSeed(selected, 1);
+		std::string rewardName = SeedFactory::SeedTypeToString(selected);
+		game.addRewardToDisplay(rewardName);
 		std::cout << " → Obtenu : " << SeedFactory::SeedTypeToString(selected) << "\n";
 	}
 
 	if (numSeeds == 0) {
 		std::cout << " → Le coffre était vide cette fois-ci ! Pas de chance.\n";
 	}
+	return true;
 }
 
-void UtilityChest::open(Game& game) {
+bool UtilityChest::open(Game& game) {
 	if (game.getMoney() < cost) {
 		std::cout << "Pas assez d'argent pour ouvrir le coffre (" << cost << " requis)\n";
-		return;
+		return false;
 	}
 
 	game.removeMoney(cost);
@@ -103,6 +106,7 @@ void UtilityChest::open(Game& game) {
 	std::discrete_distribution<> dist(weights.begin(), weights.end());
 
 	std::string selected = effectNames[dist(gen)];
+	game.addRewardToDisplay(selected);
 
 	std::unique_ptr<Effect> effect;
 	sf::Time duration = sf::seconds(20);  // Par défaut
@@ -137,5 +141,7 @@ void UtilityChest::open(Game& game) {
 		game.addActiveEffect(std::move(effect), duration);
 		std::cout << " → Obtenu : " << selected << "\n";
 	}
+	return true;
+
 }
 

@@ -1,10 +1,12 @@
 #ifndef CLICKABLE_PLOT_H
 #define CLICKABLE_PLOT_H
-
 #include <SFML/Graphics.hpp>
 #include "Seed.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 class Game;
-#include <functional>
+
+
 
 class ClickablePlot {
 public:
@@ -23,7 +25,7 @@ private:
 	sf::Text mText;
 
 	std::shared_ptr<Seed> mCurrentSeed;
-
+	sf::Sprite mSeedSprite;
 	Game* mGame = nullptr;
 };
 

@@ -11,6 +11,7 @@
 #include <list>
 #include "Enum/ChestType.h"
 #include "AutoClicker.h"
+#include "Chest/ChestView.h"
 
 class Seed; // Fwd declarations de tes entités internes
 #include "ClickablePlot.h"
@@ -47,6 +48,11 @@ public:
 	void addActiveEffect(std::unique_ptr<Effect> effect, sf::Time duration);
     bool isEffectActive(const std::string& effectName) const;
 
+	std::vector<std::unique_ptr<ChestView>> mChestViews;
+	void prepareRewardDisplay(std::vector<std::string>& rewards);
+
+	void addRewardToDisplay(const std::string& reward);
+
 
 private:
 	void processEvents();
@@ -57,7 +63,7 @@ private:
 
 	static const sf::Time TimePerFrame;
 
-	sf::RenderWindow mWindow{sf::VideoMode({800, 600}), "Farming Adventure"};
+	sf::RenderWindow mWindow{sf::VideoMode({1000, 600}), "Farming Adventure"};
 	sf::Font mFont;
 	sf::Text mStatisticsText{mFont};
 	sf::Time mStatisticsUpdateTime;
@@ -78,6 +84,9 @@ private:
 
 	float growthBonus = 1.0f;  // 1.0f = normal, <1 = plus rapide
 	float rewardBonus = 1.0f;  // 1.0f = normal, >1 = plus d'argent
+
+	std::vector<std::string> mPendingRewards;
+
 
 };
 

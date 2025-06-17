@@ -33,10 +33,24 @@ Game::Game(): mMoneyText(mFont) {
   mMoneyText.setString("Money: " + std::to_string(mMoney));
 
   mClickablePlot = std::make_unique<ClickablePlot>(
-    sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), ""); // Nom mis à jour dans setSeed
+    sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), "Wheat Seed");
   mClickablePlot->setGame(this);
   seedReservoir.setSelectedSeed(SeedType::WHEAT); // Blé par défaut
   plantNextSeed();
+
+  mChestViews.emplace_back(std::make_unique<ChestView>(
+    "res/img/utility_chest_closed.png", "res/img/utility_chest_opened.png",
+    std::make_unique<UtilityChest>(),
+    sf::Vector2f(500, 400)
+  ));
+
+  mChestViews.emplace_back(std::make_unique<ChestView>(
+  "res/img/seed_chest_closed.png", "res/img/seed_chest_opened.png",
+  std::make_unique<SeedChest>(),
+  sf::Vector2f(250, 400)
+  ));
+
+
 }
 
 void Game::onPlotHarvested(int baseReward) {
@@ -55,6 +69,7 @@ void Game::run() {
   sf::Clock clock;
   sf::Time timeSinceLastUpdate = sf::Time::Zero;
   mWindow.setFramerateLimit(60);
+
   ImGui::SFML::Init(mWindow);
   
 
@@ -66,7 +81,7 @@ void Game::run() {
 
     ImGui::Begin("Seed Reservoir");
     for (int i = 0; i <= static_cast<int>(SeedType::TREE); ++i) {
-      SeedType type = static_cast<SeedType>(i);
+      auto type = static_cast<SeedType>(i);
       int qty = seedReservoir.getSeedQuantity(type);
 
       std::string label = SeedFactory::SeedTypeToString(type) + " (" + std::to_string(qty) + ")";
@@ -218,8 +233,11 @@ void Game::processEvents() {
 
       if (mouseEvent->button == sf::Mouse::Button::Left) {
 
-        sf::Vector2f mousePos = {(float)mouseEvent->position.x, (float)mouseEvent->position.y};
+        sf::Vector2f mousePos = {(float)mouseEvent->position.x, static_cast<float>(mouseEvent->position.y)};
         mClickablePlot->handleClick(mousePos);
+        for (auto& chest : mChestViews) {
+          chest->handleClick(mousePos, *this);
+        }
 
       }
     }
@@ -244,16 +262,24 @@ void Game::update(sf::Time elapsedTime) {
     }
   }
 
+  for (auto& chest : mChestViews) {
+    chest->update();
+  }
+
   autoClicker.tick(*this, elapsedTime);
 }
 
 void Game::render() {
-  mWindow.clear();
+  mWindow.clear(sf::Color(109, 214, 39));
   mClickablePlot->draw(mWindow);
   mWindow.draw(mStatisticsText);
   mWindow.draw(mMoneyText);
   ImGui::SFML::Render(mWindow);
+  for (auto& chest : mChestViews) {
+    chest->draw(mWindow);
+  }
   mWindow.display();
+
 }
 
 void Game::updateStatistics(sf::Time elapsedTime) {
@@ -370,4 +396,13 @@ bool Game::isEffectActive(const std::string& effectName) const {
     }
   }
   return false;
+}
+
+void Game::addRewardToDisplay(const std::string& reward) {
+  mPendingRewards.push_back(reward);
+}
+
+void Game::prepareRewardDisplay(std::vector<std::string>& rewards) {
+  rewards = mPendingRewards;
+  mPendingRewards.clear();
 }

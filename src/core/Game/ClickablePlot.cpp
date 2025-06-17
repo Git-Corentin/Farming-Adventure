@@ -1,5 +1,6 @@
 #include "ClickablePlot.h"
 #include "Game.h"
+#include "Texture/TextureManager.h"
 #include <iostream>
 
 static sf::Font& getSharedFont() {
@@ -14,17 +15,20 @@ static sf::Font& getSharedFont() {
 }
 
 ClickablePlot::ClickablePlot(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& seedName)
-	: mShape(size), mText(getSharedFont(), sf::String(seedName), 16)
+	: mShape(size), mText(getSharedFont(), sf::String(seedName), 16), mSeedSprite(TextureManager::getInstance().getTexture(seedName))
 {
 	mShape.setPosition(position);
 	mShape.setFillColor(sf::Color::Green);
 	mText.setFillColor(sf::Color::Black);
 	mText.setPosition({position.x + 10, position.y + 40});
+	mSeedSprite.setPosition({position.x + 10, position.y + 40});
+	mSeedSprite.setScale({0.6f, 0.6f}); // Ajuste la taille de l'image de la graine
 }
 
 void ClickablePlot::draw(sf::RenderWindow& window) const {
-	window.draw(mShape);
+	//window.draw(mShape);
 	window.draw(mText);
+	window.draw(mSeedSprite);
 }
 
 void ClickablePlot::setGame(Game* game) {
@@ -35,6 +39,8 @@ void ClickablePlot::setSeed(std::shared_ptr<Seed> seed) {
 	mCurrentSeed = std::move(seed);
 	mText.setString(mCurrentSeed->getName());
 	mCurrentSeed->resetClicks();
+	sf::Texture& newTexture = TextureManager::getInstance().getTexture(mCurrentSeed->getName());
+	mSeedSprite.setTexture(newTexture, true); // `true` pour réadapter la taille du sprite si besoin
 }
 
 void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
@@ -58,5 +64,6 @@ void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
 
 void ClickablePlot::SetPosition(const sf::Vector2f& position) {
 	mShape.setPosition(position);
+	mSeedSprite.setPosition(position);
 	mText.setPosition({ position.x + 10, position.y + 40 });
 }
