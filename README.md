@@ -6,6 +6,7 @@ Bienvenue dans Farming Adventure, un idle game qui vous fera détester l'agricul
 Faites pousser vos semances en cliquant sur la parcelle pour gagner de l'argent, et une fois riches, c'est l'heure de gamble comme disent les jeunes !
 
 Ouvrez un coffre et découvrez une nouvelle graine à planter, ou améliorez votre champ grâce à des outils, mais attention, l'agriculture est un jeu de chance, donc ne soyez pas surpris par les catastrophes.
+
 <img width="427" alt="GameScreen" src="https://github.com/user-attachments/assets/1d5e9646-1b75-4600-a78e-c6922aea6996" />
 
 Pour générer le code de l'application :
