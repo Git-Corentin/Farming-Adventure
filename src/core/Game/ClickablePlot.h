@@ -16,6 +16,9 @@ public:
 	void setSeed(std::shared_ptr<Seed> seed);
 	void setGame(Game* game);
 
+	void Move(const sf::Event::Resized* newsize);
+
+
 private:
 	sf::RectangleShape mShape;
 	sf::Text mText;

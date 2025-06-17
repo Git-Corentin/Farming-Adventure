@@ -223,7 +223,9 @@ void Game::processEvents() {
 
       }
     }
-
+    if (const auto* resizeEvent = event->getIf<sf::Event::Resized>()) {
+        mClickablePlot->Move(resizeEvent);
+    }
   }
 }
 

@@ -54,6 +54,7 @@ private:
 	void render();
 	void updateStatistics(sf::Time elapsedTime);
 
+
 	static const sf::Time TimePerFrame;
 
 	sf::RenderWindow mWindow{sf::VideoMode({800, 600}), "Farming Adventure"};

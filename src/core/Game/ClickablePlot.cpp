@@ -55,3 +55,11 @@ void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
 
 	mShape.setFillColor(sf::Color::Yellow); // feedback visuel
 }
+
+void ClickablePlot::Move(const sf::Event::Resized* newsize) {
+	mShape.setPosition({
+		static_cast<float>(newsize->size.x) / 2.f - mShape.getSize().x / 2.f,
+		static_cast<float>(newsize->size.y) / 2.f - mShape.getSize().y / 2.f
+		});
+	mText.setPosition({ mShape.getPosition().x + 10, mShape.getPosition().y + 40 });
+}
