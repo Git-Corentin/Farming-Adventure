@@ -87,7 +87,8 @@ void UtilityChest::open(Game& game) {
 		{"GMO", 80},
 		{"Storm", 150},
 		{"Frost", 200},
-		{"Thief", 250}
+		{"Thief", 250},
+		{"Expiration", 75}
 	};
 
 	std::vector<std::string> effectNames;
@@ -127,8 +128,7 @@ void UtilityChest::open(Game& game) {
 	} else if (selected == "Thief") {
 		effect = std::make_unique<Thief>();
 		duration = sf::seconds(0);  // Instantané
-	}
-	else if (selected == "Expiration") {
+	} else if (selected == "Expiration") {
 		effect = std::make_unique<Expiration>();
 		duration = sf::seconds(0);  // Instantané
 	}

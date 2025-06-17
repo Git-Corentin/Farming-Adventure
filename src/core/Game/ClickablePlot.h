@@ -16,8 +16,7 @@ public:
 	void setSeed(std::shared_ptr<Seed> seed);
 	void setGame(Game* game);
 
-	void Move(const sf::Event::Resized* newsize);
-
+	void SetPosition(const sf::Vector2f& position);
 
 private:
 	sf::RectangleShape mShape;

@@ -93,12 +93,12 @@ void Game::run() {
       addMoney(10000);
     }
 
-    if (ImGui::Button("Open seed box")) {
+    if (ImGui::Button("Open seed box (40c)")) {
       SeedChest chest;
       chest.open(*this);
     }
 
-    if (ImGui::Button("Open utility box")) {
+    if (ImGui::Button("Open utility box (60c)")) {
       UtilityChest chest;
       chest.open(*this);
     }
@@ -224,7 +224,12 @@ void Game::processEvents() {
       }
     }
     if (const auto* resizeEvent = event->getIf<sf::Event::Resized>()) {
-        mClickablePlot->Move(resizeEvent);
+        //Changing ClickablePlot position to the center of the window
+        sf::Vector2f newposition(
+            (float)(resizeEvent->size.x) / 2,
+            (float)(resizeEvent->size.y) / 2
+        );
+        mClickablePlot->SetPosition(newposition);
     }
   }
 }
