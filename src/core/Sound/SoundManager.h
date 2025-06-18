@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Audio.hpp>
+#include <SFML/Audio/SoundSource.hpp>
 
 class SoundManager {
 public:
@@ -7,15 +8,18 @@ public:
 	SoundManager();
 	void loadSounds();
 	void playBackgroundMusic();
+	void playHempMusic();
 	void playChestSound() const;
 	void playChestLockedSound() const;
 	void playClickSound() const;
 	void playCoinSound() const;
 	void playFailureSound() const;
 
+	sf::Music& getHempMusic() { return mHempMusic; }
 
 private:
 	sf::Music mBackgroundMusic;
+	sf::Music mHempMusic;
 
 	sf::SoundBuffer mChestBuffer;
 	std::unique_ptr<sf::Sound> mChestSound;

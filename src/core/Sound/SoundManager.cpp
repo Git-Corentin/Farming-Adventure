@@ -14,6 +14,13 @@ void SoundManager::loadSounds() {
 		mBackgroundMusic.setVolume(50);
 	}
 
+	if (!mHempMusic.openFromFile("res/music/psychedelic.mp3")) {
+		std::cerr << "Erreur: Impossible de charger la musique de fond psychedelic." << std::endl;
+	} else {
+		mHempMusic.setLooping(true);
+		mHempMusic.setVolume(50);
+	}
+
 	if (!mChestBuffer.loadFromFile("res/music/chest_opening.mp3")) {
 		std::cerr << "Erreur: Impossible de charger le son de coffre." << std::endl;
 	} else {
@@ -52,7 +59,17 @@ void SoundManager::loadSounds() {
 }
 
 void SoundManager::playBackgroundMusic() {
+	// Cette méthode joue la musique de fond par défaut
+	// si mHempMusic est en cours de lecture, elle l'arrê
+
 	mBackgroundMusic.play();
+
+}
+
+void SoundManager::playHempMusic() {
+	mBackgroundMusic.stop();
+	mHempMusic.play();
+
 }
 
 void SoundManager::playChestSound() const {

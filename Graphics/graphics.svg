@@ -25,9 +25,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="6.2392933"
-     inkscape:cx="608.40224"
-     inkscape:cy="514.08066"
+     inkscape:zoom="3.7531191"
+     inkscape:cx="281.63242"
+     inkscape:cy="646.52892"
      inkscape:window-width="1854"
      inkscape:window-height="1011"
      inkscape:window-x="66"
@@ -5668,7 +5668,10 @@
      stroke-linecap="round"
      stroke-linejoin="round"
      id="path115906"
-     style="fill:url(#linearGradient119463);fill-opacity:1;stroke:#47433b;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1" /><g
+     style="fill:url(#linearGradient119463);fill-opacity:1;stroke:#47433b;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:export-filename="../res/img/coin.png"
+     inkscape:export-xdpi="349.83484"
+     inkscape:export-ydpi="349.83484" /><g
      id="g18502"
      inkscape:export-filename="../res/img/Harvester.png"
      inkscape:export-xdpi="349.83484"
@@ -7303,4 +7306,11 @@
          sodipodi:nodetypes="sssssssss" /><path
          style="color:#000000;fill:#57ac20;stroke-linecap:round;-inkscape-stroke:none;stroke:#45413c;stroke-opacity:1"
          d="M 7.9472656,4.2246094 A 0.6162619,0.6162619 0 0 0 7.3359375,4.8457031 l 0.029297,3.7695313 -1.7421875,0.828125 A 0.6162619,0.6162619 0 0 0 5.3300781,10.263672 0.6162619,0.6162619 0 0 0 6.1523437,10.556641 L 8.6054688,9.3925781 8.5683594,4.8359375 A 0.6162619,0.6162619 0 0 0 7.9472656,4.2246094 Z"
-         id="path8178" /></g></g></svg>
+         id="path8178" /></g></g><rect
+     style="fill:#5da121;stroke:#45413c;stroke-width:0.765;stroke-linecap:round;stroke-linejoin:bevel;paint-order:markers fill stroke;fill-opacity:1"
+     id="rect3517"
+     width="3.0952981"
+     height="3.189054"
+     x="60.143677"
+     y="180.85124"
+     ry="1.547649" /></svg>

@@ -332,6 +332,15 @@ void Game::plantNextSeed() {
             << ", clics nécessaires : " << newSeed->getClicksToGrow() << "\n";
 
   mClickablePlot->setSeed(newSeed);
+
+  if (typeToPlant == SeedType::HEMP) {
+    mSoundManager.playHempMusic();
+  } else {
+    if (sf::Music::Status::Playing == mSoundManager.getHempMusic().getStatus()) {
+      mSoundManager.getHempMusic().stop();
+      mSoundManager.playBackgroundMusic();
+    }
+  }
 }
 
 void Game::addMoney(uint64_t amount) {
