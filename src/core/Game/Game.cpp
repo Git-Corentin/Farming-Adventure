@@ -101,6 +101,11 @@ void Game::run() {
         }
           }
     }
+
+
+    ImGui::End();
+
+    ImGui::Begin("Developer");
     if (ImGui::Button("Receive a random seed !")) {
       int maxType = static_cast<int>(SeedType::TREE);
       SeedType randomType;
@@ -131,26 +136,6 @@ void Game::run() {
       UtilityChest chest;
       chest.open(*this);
     }
-
-
-    ImGui::End();
-
-    ImGui::Begin("Soil");
-
-    ImGui::Text("Soil degradation :");
-    float degradationRatio = soil.getDegradationRatio();
-    std::string progressLabel = std::format("{:.0f} %", degradationRatio * 100);
-    ImGui::ProgressBar(degradationRatio, ImVec2(200, 20), progressLabel.c_str());
-
-    ImGui::Text("Click penalty : %.2fx", soil.getGrowthMultiplier());
-    ImGui::Text("Income multiplier : %.2fx", soil.getRewardMultiplier());
-
-    ImGui::End();
-
-    ImGui::Begin("Active Effects");
-
-    ImGui::Text("Total Growth Multiplier: %.2fx", computeTotalGrowthMultiplier());
-    ImGui::Text("Total Reward Multiplier: %.2fx", computeTotalRewardMultiplier());
 
     ImGui::Separator();
 
@@ -186,29 +171,51 @@ void Game::run() {
       activeEffects.emplace_back(std::move(e), sf::seconds(20));
     }
 
-	if (ImGui::Button("Storm")) {
-		auto e = std::make_unique<Storm>();
-		e->applyEffect(*this);
-		activeEffects.emplace_back(std::move(e), sf::seconds(0));
-	}
+    if (ImGui::Button("Storm")) {
+      auto e = std::make_unique<Storm>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(0));
+    }
 
-	if (ImGui::Button("Frost")) {
-		auto e = std::make_unique<Frost>();
-		e->applyEffect(*this);
-		activeEffects.emplace_back(std::move(e), sf::seconds(20));
-	}
+    if (ImGui::Button("Frost")) {
+      auto e = std::make_unique<Frost>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(20));
+    }
 
-	if (ImGui::Button("Thief")) {
-		auto e = std::make_unique<Thief>();
-		e->applyEffect(*this);
-		activeEffects.emplace_back(std::move(e), sf::seconds(0));
-	}
+    if (ImGui::Button("Thief")) {
+      auto e = std::make_unique<Thief>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(0));
+    }
 
-	if (ImGui::Button("Expiration")) {
-		auto e = std::make_unique<Expiration>();
-		e->applyEffect(*this);
-		activeEffects.emplace_back(std::move(e), sf::seconds(0));
-	}
+    if (ImGui::Button("Expiration")) {
+      auto e = std::make_unique<Expiration>();
+      e->applyEffect(*this);
+      activeEffects.emplace_back(std::move(e), sf::seconds(0));
+    }
+    ImGui::End();
+
+
+
+    ImGui::Begin("Soil");
+
+    ImGui::Text("Soil degradation :");
+    float degradationRatio = soil.getDegradationRatio();
+    std::string progressLabel = std::format("{:.0f} %", degradationRatio * 100);
+    ImGui::ProgressBar(degradationRatio, ImVec2(200, 20), progressLabel.c_str());
+
+    ImGui::Text("Click penalty : %.2fx", soil.getGrowthMultiplier());
+    ImGui::Text("Income multiplier : %.2fx", soil.getRewardMultiplier());
+
+    ImGui::End();
+
+    ImGui::Begin("Active Effects");
+
+    ImGui::Text("Total Growth Multiplier: %.2fx", computeTotalGrowthMultiplier());
+    ImGui::Text("Total Reward Multiplier: %.2fx", computeTotalRewardMultiplier());
+
+    ImGui::Separator();
 
     ImGui::Text("Active effects :");
 
