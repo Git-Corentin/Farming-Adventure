@@ -65,5 +65,5 @@ void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
 void ClickablePlot::SetPosition(const sf::Vector2f& position) {
 	mShape.setPosition(position);
 	mSeedSprite.setPosition(position);
-	mText.setPosition({ position.x + 10, position.y + 40 });
+	mText.setPosition({ position.x + 10, position.y - 50});
 }
