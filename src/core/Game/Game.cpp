@@ -112,6 +112,12 @@ void Game::run() {
       seedReservoir.addSeed(randomType, 1);
     }
 
+    if (ImGui::Button("Give 1 of each seed")) {
+      for (int i = 0; i <= static_cast<int>(SeedType::TREE); ++i) {
+        seedReservoir.addSeed(static_cast<SeedType>(i), 1);
+      }
+    }
+
     if (ImGui::Button("Give money")) {
       addMoney(10000);
     }
