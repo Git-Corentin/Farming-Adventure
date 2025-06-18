@@ -11,7 +11,6 @@
 #include "Game/Game.h"
 #include <iostream>
 
-
 SeedChest::SeedChest() {
 	cost = 40;
 }
@@ -24,6 +23,7 @@ bool SeedChest::open(Game& game) {
 
 	if (game.getMoney() < cost) {
 		std::cout << "Pas assez d'argent pour ouvrir le coffre (" << cost << " requis)\n";
+		game.getSoundManager().playChestLockedSound();
 		return false;
 	}
 
@@ -65,7 +65,12 @@ bool SeedChest::open(Game& game) {
 	}
 
 	if (numSeeds == 0) {
+		game.getSoundManager().playFailureSound();
+
 		std::cout << " → Le coffre était vide cette fois-ci ! Pas de chance.\n";
+	} else {
+		game.getSoundManager().playChestSound();
+
 	}
 	return true;
 }
@@ -73,10 +78,14 @@ bool SeedChest::open(Game& game) {
 bool UtilityChest::open(Game& game) {
 	if (game.getMoney() < cost) {
 		std::cout << "Pas assez d'argent pour ouvrir le coffre (" << cost << " requis)\n";
+		game.getSoundManager().playChestLockedSound();
+
 		return false;
 	}
 
 	game.removeMoney(cost);
+	game.getSoundManager().playChestSound();
+
 
 	std::random_device rd;
 	std::mt19937 gen(rd());

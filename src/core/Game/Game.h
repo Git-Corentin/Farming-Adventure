@@ -12,6 +12,9 @@
 #include "Enum/ChestType.h"
 #include "AutoClicker.h"
 #include "Chest/ChestView.h"
+#include "Sound/SoundManager.h"
+
+#include <SFML/Audio.hpp>
 
 class Seed; // Fwd declarations de tes entités internes
 #include "ClickablePlot.h"
@@ -53,6 +56,9 @@ public:
 
 	void addRewardToDisplay(const std::string& reward);
 
+	SoundManager& getSoundManager() { return mSoundManager; }
+
+
 
 private:
 	void processEvents();
@@ -86,6 +92,11 @@ private:
 	float rewardBonus = 1.0f;  // 1.0f = normal, >1 = plus d'argent
 
 	std::vector<std::string> mPendingRewards;
+
+	SoundManager mSoundManager;
+
+	sf::Sprite mCoinSprite;
+
 
 
 };

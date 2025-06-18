@@ -9,6 +9,7 @@
 #include <optional>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Audio.hpp>
 #include "SeedFactory.h"  // Pour créer des graines
 #include "SeedReservoir.h"  // Pour la gestion des graines
 #include "Chest/Chest.h"  // Pour ouvrir le coffre à graines
@@ -16,19 +17,25 @@
 #include "Effect/Malus.h"  // Pour les effets de malus
 #include "Effect/ActiveEffect.h"  // Pour les effets actifs
 #include "Effect/EffectInterface.h"
+#include "Texture/TextureManager.h"  // Pour la gestion des textures
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game(): mMoneyText(mFont) {
+Game::Game(): mMoneyText(mFont), mCoinSprite(TextureManager::getInstance().getTexture("coin")) {
+  assert(mFont.openFromFile("res/Sansation.ttf") && "Failed to load font");
   mStatisticsText.setFont(mFont);
   mStatisticsText.setPosition({5.f, 5.f});
   mStatisticsText.setCharacterSize(14);
 
-  mMoneyText.setPosition({5.f, 35.f});
-  mMoneyText.setCharacterSize(16);
-  mMoneyText.setFillColor(sf::Color::White);
-  mMoneyText.setString("Money: " + std::to_string(mMoney));
+  mMoneyText.setPosition({70.f, 60.f});
+  mMoneyText.setCharacterSize(25);
+  mMoneyText.setFillColor(sf::Color(251, 201, 3));
+  mMoneyText.setStyle(sf::Text::Bold);
+  mMoneyText.setString(std::to_string(mMoney));
+
+  mCoinSprite.setPosition({10.f, 50.f});
+  mCoinSprite.setScale({0.4f, 0.4f});
 
   mClickablePlot = std::make_unique<ClickablePlot>(
     sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 300.f), "Wheat Seed");
@@ -47,6 +54,9 @@ Game::Game(): mMoneyText(mFont) {
   std::make_unique<SeedChest>(),
   sf::Vector2f(250, 400)
   ));
+
+  mSoundManager.loadSounds();
+  mSoundManager.playBackgroundMusic();
 
 
 }
@@ -268,14 +278,17 @@ void Game::update(sf::Time elapsedTime) {
 }
 
 void Game::render() {
-  mWindow.clear(sf::Color(109, 214, 39));
+  mWindow.clear(sf::Color(93, 161, 33));
   mClickablePlot->draw(mWindow);
   mWindow.draw(mStatisticsText);
   mWindow.draw(mMoneyText);
+  mWindow.draw(mCoinSprite);
+
   ImGui::SFML::Render(mWindow);
   for (auto& chest : mChestViews) {
     chest->draw(mWindow);
   }
+
   mWindow.display();
 
 }
@@ -330,12 +343,12 @@ void Game::addMoney(uint64_t amount) {
 		return;
 	}
     mMoney += amount;
-    mMoneyText.setString("Money: " + std::to_string(mMoney));
+    mMoneyText.setString(std::to_string(mMoney));
 }
 
 void Game::removeMoney(int amount) {
     mMoney -= amount;
-    mMoneyText.setString("Money: " + std::to_string(mMoney));
+    mMoneyText.setString(std::to_string(mMoney));
 }
 
 float Game::computeTotalGrowthMultiplier() const {

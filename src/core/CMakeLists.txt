@@ -32,6 +32,8 @@ add_library(lib_core
         Texture/TextureManager.h
         Chest/ChestView.cpp
         Chest/ChestView.h
+        Sound/SoundManager.cpp
+        Sound/SoundManager.h
 )
 target_include_directories(lib_core PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -39,4 +41,4 @@ target_include_directories(lib_core PUBLIC
         ${imgui_SOURCE_DIR}/backends
         ${imgui-sfml_SOURCE_DIR}
 )
-target_link_libraries(lib_core PUBLIC pugixml sfml-graphics ImGui-SFML::ImGui-SFML)
+target_link_libraries(lib_core PUBLIC pugixml sfml-graphics sfml-audio ImGui-SFML::ImGui-SFML)

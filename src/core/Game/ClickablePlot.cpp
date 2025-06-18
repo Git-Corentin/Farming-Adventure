@@ -45,6 +45,7 @@ void ClickablePlot::setSeed(std::shared_ptr<Seed> seed) {
 
 void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
 	if (!mCurrentSeed || !mShape.getGlobalBounds().contains(mousePosition) and autoClick == false) return;
+	mGame->getSoundManager().playClickSound();
 
 	mCurrentSeed->incrementClicks();
 
@@ -54,6 +55,8 @@ void ClickablePlot::handleClick(sf::Vector2f mousePosition, bool autoClick) {
 			std::string name = mCurrentSeed->getName();
 
 			mGame->onPlotHarvested(reward);
+			mGame->getSoundManager().playCoinSound();
+
 			std::cout << "Récolte de " << name << " réussie, gain: " << reward << "\n";
 		}
 		mCurrentSeed->resetClicks(); // Visuel si tu veux afficher la progression
